@@ -1,0 +1,42 @@
+﻿@using E_Ticaret.Models;
+@model Addresses
+
+<div class="col-md-12 col-sm-12">
+    <div class="mb-2">
+        <label class="form-label" cfor="checkout-name">Ad Soyad:</label>
+        <input type="text" id="checkout-name" class="form-control" name="fname" value="@Model.Name" disabled />
+    </div>
+</div>
+<input type="hidden" name="name" value="@Model.ID" id="AddressID" />
+<div class="col-md-6 col-sm-12">
+    <div class="mb-2">
+        <label class="form-label" cfor="checkout-apt-number">Ev No:</label>
+        <input type="number" id="checkout-apt-number" class="form-control"  value="@Model.HomeNo" disabled/>
+    </div>
+</div>
+<div class="col-md-6 col-sm-12">
+    <div class="mb-2">
+        <label class="form-label" cfor="checkout-landmark">Daire No:</label>
+        <input type="number" id="checkout-landmark" class="form-control" value="@Model.ApartmentNo" disabled/>
+    </div>
+</div>
+<div class="col-md-6 col-sm-12">
+    <div class="mb-2">
+        <label class="form-label" cfor="checkout-city">Şehir:</label>
+        <input type="text" id="checkout-city" class="form-control" value="@Model.City" disabled/>
+    </div>
+</div>
+<div class="col-md-6 col-sm-12">
+    <div class="mb-2">
+        <label class="form-label" cfor="checkout-state">Ülke:</label>
+        <input type="text" id="checkout-state" class="form-control" value="@Model.Country" disabled/>
+    </div>
+</div>
+<div class="col-md-12 col-sm-12">
+    <div class="mb-2">
+        <label class="form-label" >Tam Adres:</label>
+        <input type="text"  class="form-control"  value="@Model.Description" disabled/>
+    </div>
+</div>
+
+

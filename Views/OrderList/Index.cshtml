@@ -1,0 +1,140 @@
+﻿@using E_Ticaret.Models
+@model OrderTotal
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Home.cshtml";
+}
+
+<div class="content ecommerce-application">
+    <div class="content-overlay"></div>
+    <div class="header-navbar-shadow"></div>
+    <div class="content-wrapper container-xxl p-0">
+
+        <div class="content-body">
+            <!-- Wizard starts -->
+            <div class="bs-stepper">
+                <div class="step" data-target="#step-cart" role="tab" id="step-cart-trigger">
+
+                </div>
+
+
+            </div>
+            <!-- Wizard ends -->
+            <!-- Checkout Place order starts -->
+            <div id="step-cart" class="content" role="tabpanel" aria-labelledby="step-cart-trigger">
+                <div id="place-order" class="list-view product-checkout">
+                    <!-- Checkout Place Order Left starts -->
+                    <div class="checkout-items">
+                        
+                            @foreach (var item in ViewBag.DetailProduct)
+                            {
+                                <div class="card ecommerce-card">
+                                    <div class="item-img">
+                                        <a href="~/Home/ProductDetail/@item.Products.ID">
+                                            <img src="~/Uploads/Product/urun-resmi-yok.png" alt="img-placeholder" />
+                                        </a>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="item-name">
+                                            <h6 class="mb-0"><a href="~/Home/ProductDetail/@item.Products.ID" class="text-body">@item.Products.Name</a></h6>
+                                            <span class="item-company">By <a href="~/Home/ProductDetail/@item.Products.ID" class="company-name">@item.Products.TradeMark</a></span>
+                                            <div class="item-rating">
+                                                <ul class="unstyled-list list-inline">
+                                                    @for (int i = 0; i < item.Products.StarPoint; i++)
+                                                    {
+                                                        <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i></li>
+                                                    }
+                                                    @for (int i = 0; i < 5 - item.Products.StarPoint; i++)
+                                                    {
+                                                        <li class="ratings-list-item"><i data-feather="star" class="unfilled-star"></i></li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        @*<div class="item-quantity">
+                                                    <span class="quantity-title">Qty:</span>
+                                                    <div class="quantity-counter-wrapper">
+                                                            <input type="text" class="form-control-sm" value="@item.Quantity" disabled style="width: 45px"/>
+                                                    </div>
+                                            </div>*@
+                                        <span>
+                                            Adet: @item.Quantity
+                                        </span>
+
+                                    </div>
+                                    <div class="item-options text-center">
+                                        <div class="item-wrapper">
+                                            <div class="item-cost">
+                                                <h4 class="item-price">
+                                                    @((item.Products.Price * item.Quantity).ToString("C"))
+                                                </h4>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            }
+                        
+                        
+                    </div>
+                    <!-- Checkout Place Order Left ends -->
+                    <!-- Checkout Place Order Right starts -->
+                    <div class="checkout-options">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="price-details">
+                                    <h6 class="price-title">Sipariş Detayları</h6>
+                                    <ul class="list-unstyled">
+                                        <li class="price-detail">
+                                            <div class="detail-title">Toplam Fiyat</div>
+                                            <div class="detail-amt">
+                                                @*@((Model.Quantity * Model.Products.Price).ToString("c"))*@
+                                                @Model.TotalPrice.ToString("c")
+
+                                            </div>
+                                        </li>
+                                        <li class="price-detail">
+                                            <div class="detail-title">Adres</div>
+                                            <div class="detail-amt discount-amt"><p style="width: 300px; overflow: hidden; /* taşmayı engeller */white-space: nowrap; /* alt satıra geçmemesi içindir. */text-overflow: ellipsis;">
+                                                @Model.AddressDescription
+                                            </p></div>
+                                        </li>
+                                        <li class="price-detail">
+                                            <div class="detail-title">Sipariş Tarihi</div>
+                                            <div class="detail-amt discount-amt">@Model.AddedDate.ToShortDateString()</div>
+                                        </li>
+                                        <li class="price-detail">
+                                            <div class="detail-title">Sipariş Durumu</div>
+                                            <div class="detail-amt">@Model.Status</div>
+                                        </li>
+                                        <li class="price-detail">
+                                            <div class="detail-title">Kargo Fiyatı</div>
+                                            <div class="detail-amt">12,50</div>
+                                        </li>
+                                        <li class="price-detail">
+                                            <div class="detail-title">K.D.V Oranı</div>
+                                            <div class="detail-amt discount-amt">%18</div>
+                                        </li>
+
+                                    </ul>
+                                    <hr />
+                                    <ul class="list-unstyled">
+                                        <li class="price-detail">
+                                            <div class="detail-title detail-total">Total</div>
+                                            <div class="detail-amt fw-bolder">₺56,05</div>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- Checkout Place Order Right ends -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

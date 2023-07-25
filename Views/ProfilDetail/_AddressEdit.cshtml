@@ -1,0 +1,28 @@
+﻿@using E_Ticaret.Models
+@model Addresses
+
+<label>Adres Adı: </label>
+<div class="mb-1">
+    <input type="text" placeholder="Adres Adı" class="form-control" value="@Model.Name" id="AddressName"/>
+</div>
+
+<label>Adres: </label>
+<div class="mb-1">
+    <input type="text" placeholder="Adres" class="form-control" value="@Model.Description" id="AddressDescription"/>
+</div>
+<label>Şehir: </label>
+<div class="mb-1">
+    <input type="text" placeholder="Şehir" class="form-control" value="@Model.City" id="AddressCity"/>
+</div>
+<label>Ülke: </label>
+<div class="mb-1">
+    <input type="text" placeholder="Ülke" class="form-control" value="@Model.Country" id="AddressCountry"/>
+</div>
+<label>Daire No: </label>
+<div class="mb-1">
+    <input type="text" placeholder="Daire No" class="form-control" value="@Model.ApartmentNo" id="AddressApartNo"/>
+</div>
+<label>Ev No: </label>
+<div class="mb-1">
+    <input type="text" placeholder="Ev No" class="form-control" value="@Model.HomeNo" id="AddressHomeNo"/>
+</div>

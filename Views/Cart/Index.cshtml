@@ -1,0 +1,471 @@
+﻿@model E_Ticaret.Models.Cart
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Home.cshtml";
+}
+<div class="modal fade text-start" id="AddCredit" tabindex="-1" aria-labelledby="myModalLabel24" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel24">Kredi Veya Banka Kartı</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="col-md-12">
+                        <label class="form-label" for="credit-card">Kart No</label>
+                        <input type="number" oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control credit-card-mask" maxlength="16" placeholder="0000 0000 0000 0000" id="credit-card" />
+                    </div>
+                    <hr />
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input id="cc" type="text" placeholder="MM/YY" class="form-control masked" pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)" data-valid-example="05/18" />
+                                @*<input type="text" class="form-control" name="name" value="" />*@
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">CVC</label>
+                                <input type="number" class="form-control" name="name" oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" value="" maxlength="3" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content ecommerce-application">
+    <div class="content-overlay"></div>
+    <div class="header-navbar-shadow"></div>
+    <div class="content-wrapper container-xxl p-0">
+        <div class="content-header row">
+            <div class="content-header-left col-md-9 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-12">
+                        <h2 class="content-header-title float-start mb-0">Sepet</h2>
+                        <div class="breadcrumb-wrapper">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="index.html">Anasayfa</a>
+                                </li>
+                                <li class="breadcrumb-item active">
+                                    Sepet
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="content-body">
+            <div class="bs-stepper checkout-tab-steps">
+                <!-- Wizard starts -->
+                <div class="bs-stepper-header">
+                    <div class="step" data-target="#step-cart" role="tab" id="step-cart-trigger">
+                        <button type="button" class="step-trigger">
+                            <span class="bs-stepper-box">
+                                <i data-feather="shopping-cart" class="font-medium-3"></i>
+                            </span>
+                            <span class="bs-stepper-label">
+                                <span class="bs-stepper-title">Sepet</span>
+                                <span class="bs-stepper-subtitle">Sepete Eklenilen Ürünler</span>
+                            </span>
+                        </button>
+                    </div>
+                    <div class="line">
+                        <i data-feather="chevron-right" class="font-medium-2"></i>
+                    </div>
+                    <div class="step" data-target="#step-address" role="tab" id="step-address-trigger">
+                        <button type="button" class="step-trigger">
+                            <span class="bs-stepper-box">
+                                <i data-feather="home" class="font-medium-3"></i>
+                            </span>
+                            <span class="bs-stepper-label">
+                                <span class="bs-stepper-title">Adres</span>
+                                <span class="bs-stepper-subtitle">Adres Bilgileri</span>
+                            </span>
+                        </button>
+                    </div>
+                    <div class="line">
+                        <i data-feather="chevron-right" class="font-medium-2"></i>
+                    </div>
+                    <div class="step" data-target="#step-payment" role="tab" id="step-payment-trigger">
+                        <button type="button" class="step-trigger">
+                            <span class="bs-stepper-box">
+                                <i data-feather="credit-card" class="font-medium-3"></i>
+                            </span>
+                            <span class="bs-stepper-label">
+                                <span class="bs-stepper-title">Payment</span>
+                                <span class="bs-stepper-subtitle">Select Payment Method</span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Wizard ends -->
+
+                <div class="bs-stepper-content">
+                    <!-- Checkout Place order starts -->
+                    <div id="step-cart" class="content" role="tabpanel" aria-labelledby="step-cart-trigger">
+                        <div id="place-order" class="list-view product-checkout">
+                            <!-- Checkout Place Order Left starts -->
+                            @if (Model.Cartlines.Count > 0)
+                            {
+                                <div class="checkout-items" id="Getcart">
+                                    @foreach (var item in Model.Cartlines)
+                                    {
+                                        <div class="card ecommerce-card">
+                                            <div class="item-img">
+                                                @if (item.Product.ImageURL == "0")
+                                                {
+                                                    <img src="~/Uploads/Product/urun-resmi-yok.png" class="img-fluid" alt="img-placeholder" />
+                                                }
+                                                else
+                                                {
+                                                    <img src="@item.Product.ImageURL" class="img-fluid" alt="img-placeholder" style="width: 200px; height: 200px" />
+                                                }
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="item-name">
+                                                    <h6 class="mb-0"><a href="app-ecommerce-details.html" class="text-body">@item.Product.Name</a></h6>
+                                                    <span class="item-company"><a href="#" class="company-name">@item.Product.TradeMark</a></span>
+                                                    <div class="item-rating">
+                                                        <ul class="unstyled-list list-inline">
+                                                            @for (int i = 0; i < item.Product.StarPoint; i++)
+                                                            {
+                                                                <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i></li>
+                                                            }
+                                                            @for (int i = 0; i < 5 - item.Product.StarPoint; i++)
+                                                            {
+                                                                <li class="ratings-list-item"><i data-feather="star" class="unfilled-star"></i></li>
+                                                            }
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                @if (item.Product.UnitsInStock != 0)
+                                                {
+                                                    <p class="card-text">Stokda - <span class="text-success">@item.Product.UnitsInStock adet</span></p>
+                                                }
+                                                else
+                                                {
+                                                    <p class="card-text text-danger">Stok Yok</p>
+                                                }
+                                                <div class="item-quantity">
+                                                    <span class="quantity-title">Adet:</span>
+                                                    <div class="quantity-counter-wrapper">
+                                                        <div class="input-group">
+                                                            <input type="text" class="quantity-counter" value="@item.Quantity" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @*<span class="delivery-date text-muted">Delivery by, Wed Apr 25</span>
+                                                    <span class="text-success">17% off 4 offers Available</span>*@
+                                            </div>
+                                            <div class="item-options text-center">
+                                                <div class="item-wrapper">
+                                                    <div class="item-cost">
+                                                        <h4 class="item-price">@((item.Product.Price * item.Quantity).ToString("c"))</h4>
+                                                        <p class="card-text shipping">
+                                                            @*<span class="badge rounded-pill badge-light-success">Free Shipping</span>*@
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="btn btn-light mt-1" onclick="RemoveCart(@item.Product.ID)">
+                                                    <i data-feather="x" class="align-middle me-25"></i>
+                                                    <span>Kaldır</span>
+                                                </button>
+                                                <button type="button" class="btn btn-primary btn-cart move-cart">
+                                                    <i data-feather="heart" class="align-middle me-25"></i>
+                                                    <span class="text-truncate">Favorilere Ekle</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-info" role="alert">
+                                    <h4 class="alert-heading">Sepet Boş</h4>
+                                    <div class="alert-body">
+                                        Alışverişe devam etmek için lütfen sepetinizi doldurun.
+                                    </div>
+                                </div>
+                            }
+
+                            <!-- Checkout Place Order Left ends -->
+                            <!-- Checkout Place Order Right starts -->
+                            <div class="checkout-options">
+                                <div class="card">
+                                    <div class="card-body">
+                                        @*<label class="section-label form-label mb-1">Options</label>
+                                            <div class="coupons input-group input-group-merge">
+                                                <input type="text" class="form-control" placeholder="Coupons" aria-label="Coupons" aria-describedby="input-coupons" />
+                                                <span class="input-group-text text-primary ps-1" id="input-coupons">Apply</span>
+                                            </div>
+                                            <hr />*@
+                                        <div class="price-details">
+                                            <h6 class="price-title">Sipariş Detayları</h6>
+                                            <ul class="list-unstyled">
+                                                <li class="price-detail">
+                                                    <div class="detail-title">Brüt Toplam</div>
+                                                    <div class="detail-amt">@Model.Total().ToString("c")</div>
+                                                </li>
+                                                <li class="price-detail">
+                                                    <div class="detail-title">Kargo Ücreti</div>
+
+                                                    <div class="detail-amt">12,50</div>
+                                                </li>
+                                                <li class="price-detail">
+                                                    <div class="detail-title">Toplam İndirim</div>
+                                                    <div class="detail-amt discount-amt text-success">0,00</div>
+                                                </li>
+                                            </ul>
+                                            <hr />
+                                            <ul class="list-unstyled">
+                                                <li class="price-detail">
+                                                    <div class="detail-title detail-total">Toplam Fiyat</div>
+                                                    <div class="detail-amt fw-bolder">@Model.Total().ToString("c")</div>
+                                                </li>
+                                            </ul>
+                                            @if (Model.Cartlines.Count > 0)
+                                            {
+                                                <button type="button" class="btn btn-primary w-100 btn-next place-order">Satın Al</button>
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Checkout Place Order Right ends -->
+                            </div>
+                        </div>
+                        <!-- Checkout Place order Ends -->
+                    </div>
+                    <!-- Checkout Customer Address Starts -->
+                    <div id="step-address" class="content" role="tabpanel" aria-labelledby="step-address-trigger">
+                        <form id="checkout-address" class="list-view">
+                            <!-- Checkout Customer Address Left starts -->
+                            <div class="card">
+                                <div class="card-header flex-column align-items-start">
+                                    <h4 class="card-title">Adres Seç</h4>
+                                    <p class="card-text text-muted mt-25">Devam etmek için lütfen adres seçiniz.</p>
+                                </div>
+                                <div class="card-body" style="height: 450px">
+                                    @*@Html.DropDownList("Address", new SelectList(ViewBag.Address, "Value", "Text"), "Kategori Seçiniz", new { @class = "form-control" })*@
+                                    @if (ViewBag.Adress != null)
+                                    {
+                                        <div class="btn-group">
+                                            <button class="btn btn-gradient-primary dropdown-toggle" type="button" id="dropdownMenuButton101" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Adresler
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton101">
+                                                @foreach (var item in ViewBag.Adress)
+                                                {
+                                                    <a><span class="dropdown-item" onclick="GetAddress(@item.ID)">@item.Name</span></a>
+                                                    @*<input type="text" name="AddressID" value="@item.ID" id="AddressID" hidden/>*@
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-info" role="alert">
+                                            <h4 class="alert-heading">Adres Boş</h4>
+                                            <div class="alert-body">
+                                                Devam etmek için lütfen adres seçiniz
+                                            </div>
+                                        </div>
+                                    }
+                                    <div class="row" id="GetAddressForm">
+
+                                    </div>
+
+                                </div>
+                                <div class="col-12">
+                                    <button type="button" class="btn btn-primary btn-next delivery-address" style="margin-bottom: 10px; margin-left: 22px">Kaydet ve Devam Et</button>
+                                </div>
+                            </div>
+                            <!-- Checkout Customer Address Left ends -->
+                            <!-- Checkout Customer Address Right starts -->
+                            @*<div class="customer-card">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="card-title">John Doe</h4>
+                                        </div>
+                                        <div class="card-body actions">
+                                            <p class="card-text mb-0">9447 Glen Eagles Drive</p>
+                                            <p class="card-text">Lewis Center, OH 43035</p>
+                                            <p class="card-text">UTC-5: Eastern Standard Time (EST)</p>
+                                            <p class="card-text">202-555-0140</p>
+                                            <button type="button" class="btn btn-primary w-100 btn-next delivery-address mt-2">
+                                                Deliver To This Address
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>*@
+                            <!-- Checkout Customer Address Right ends -->
+                        </form>
+                    </div>
+                    <!-- Checkout Customer Address Ends -->
+                    <!-- Checkout Payment Starts -->
+                    <div id="step-payment" class="content" role="tabpanel" aria-labelledby="step-payment-trigger">
+                        <form id="checkout-payment" class="list-view product-checkout" onsubmit="return false;">
+                            <div class="payment-type">
+                                <div class="card">
+                                    <div class="card-header flex-column align-items-start">
+                                        <h4 class="card-title">Ödeme Seçenekleri</h4>
+                                        <p class="card-text text-muted mt-25">Ödeme yapmak için lütfen bir ödeme seçeneği seçiniz.</p>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="other-payment-options list-unstyled">
+                                            <li class="py-50">
+                                                <div class="form-check">
+                                                    <input type="radio" id="customColorRadio2" name="paymentOptions" class="form-check-input" onclick="AddCredit()" />
+                                                    <label class="form-check-label" for="customColorRadio2"> Kredi Veya Banka Kartı </label>
+                                                </div>
+                                            </li>
+                                            <li class="py-50">
+                                                <div class="form-check">
+                                                    <input type="radio" id="customColorRadio4" name="paymentOptions" class="form-check-input" />
+                                                    <label class="form-check-label" for="customColorRadio4"> Kapıda Nakit Ödeme </label>
+                                                </div>
+                                            </li>
+                                            <li class="py-50">
+                                                <div class="form-check">
+                                                    <input type="radio" id="customColorRadio5" name="paymentOptions" class="form-check-input" />
+                                                    <label class="form-check-label" for="customColorRadio5"> Kapıda Kartla Ödeme </label>
+                                                </div>
+                                            </li>
+                                        </ul>
+
+                                        <div class="gift-card mb-25">
+                                            <p class="card-text">
+                                                <i data-feather="plus-circle" class="me-50 font-medium-5"></i>
+                                                <span class="align-middle">Add Gift Card</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="amount-payable checkout-options">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-title">Toplam Fiyat</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="list-unstyled price-details">
+                                            <li class="price-detail">
+                                                <div class="details-title">Toplam @Model.Cartlines.Count ürün</div>
+                                                <div class="detail-amt">
+                                                    <strong>@Model.Total().ToString("c")</strong>
+                                                </div>
+                                            </li>
+                                            <li class="price-detail">
+                                                <div class="details-title">Delivery Charges</div>
+                                                <div class="detail-amt discount-amt text-success">Free</div>
+                                            </li>
+                                        </ul>
+                                        <hr />
+                                        <ul class="list-unstyled price-details">
+                                            <li class="price-detail">
+                                                <div class="details-title">Toplam</div>
+                                                <div class="detail-amt fw-bolder">@Model.Total().ToString("c")</div>
+                                            </li>
+                                        </ul>
+                                        <button class="btn btn-primary" onclick="SendOrder()">Satın Al</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Checkout Payment Ends -->
+                    <!-- </div> -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<input type="text" name="UserID" value="@Session["ID"]" id="UserID" hidden />
+@section Adjs
+{
+    <script>
+        function RemoveCart(ID) {
+            getValue("Cart/RemoveCart",
+                { ID: ID },
+                function (data, err) {
+                    console.log(data);
+                    if (!data) {
+                        return;
+                    } else {
+                        window.location.href = '@Url.Action("Index","Cart")';
+                    }
+                })
+
+        };
+
+        @*function GetCart(ID) {
+            getValue("Cart/CartPartial",
+                { ID: ID },
+                function (data, err) {
+                    console.log(data);
+                    if (!data) {
+                        return;
+                    } else {
+                        window.location.href = '@Url.Action("Index","Cart")';
+                    }
+                })
+
+        };*@
+
+
+
+        function GetAddress(ID) {
+            getValue("Cart/GetAddress",
+                { ID:ID },
+                function (data, err) {
+                    if (!data) {
+                        return;
+                    } else {
+                        $('#GetAddressForm').html(data);
+                    }
+                })
+
+        };
+
+        function AddCredit() {
+            $('#AddCredit').modal('show');
+
+        };
+
+
+        function SendOrder() {
+            var AddressID = $('#AddressID').val();
+            getValue("/Cart/Buy",
+                { UserID: $('#UserID').val(), AddressID: AddressID },
+                function (data, err) {
+                    if (!data) {
+                        return;
+                    } else if (data == 'Başarılı') {
+                        @*setTimeout(function () { window.location.replace("@Url.Action("Index","Home")"); }, 1400); // BAŞKA SAYFAYA GÖNDERME*@
+                        window.location.href = '@Url.Action("OrderDetail", "OrderList")'
+                    }
+                    else if (data == 'Hata') {
+                        alert("Hata");
+                    }
+                    else if (data == 'Bos') {
+                        alert("Lütfen Bilgileri Doldurunuz");
+                    }
+                });
+        };
+
+
+    </script>
+    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/masking-input.js" data-autoinit="true"></script>
+
+}

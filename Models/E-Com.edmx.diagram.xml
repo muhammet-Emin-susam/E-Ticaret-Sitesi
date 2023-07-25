@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="5f898f73ce8c4deeac97f63a4cca637c" Name="Diagram1" ZoomLevel="93">
+        <EntityTypeShape EntityType="Model.Addresses" Width="1.5" PointX="3" PointY="16.75" />
+        <EntityTypeShape EntityType="Model.Admins" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.Categories" Width="1.5" PointX="1.5" PointY="20.75" />
+        <EntityTypeShape EntityType="Model.Comments" Width="1.5" PointX="3" PointY="10.625" />
+        <EntityTypeShape EntityType="Model.MessageReplies" Width="1.5" PointX="5.25" PointY="6.375" />
+        <EntityTypeShape EntityType="Model.Messages" Width="1.5" PointX="3" PointY="5.125" />
+        <EntityTypeShape EntityType="Model.OrderDetails" Width="1.5" PointX="7.5" PointY="12" />
+        <EntityTypeShape EntityType="Model.Orders" Width="1.5" PointX="5.25" PointY="11.875" />
+        <EntityTypeShape EntityType="Model.Products" Width="1.5" PointX="0.75" PointY="12" />
+        <EntityTypeShape EntityType="Model.ShopUsers" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.sysdiagrams" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.Users" Width="1.5" PointX="0.75" PointY="6.875" />
+        <AssociationConnector Association="Model.FK_Addresses_Users" />
+        <AssociationConnector Association="Model.FK_Orders_Addresses" />
+        <AssociationConnector Association="Model.FK_Products_Categories" />
+        <AssociationConnector Association="Model.FK_Comments_Products" />
+        <AssociationConnector Association="Model.FK_Comments_Users" />
+        <AssociationConnector Association="Model.FK_MessageReplies_Messages" />
+        <AssociationConnector Association="Model.FK_MessageReplies_Users" />
+        <AssociationConnector Association="Model.FK_MessageReplies_Users1" />
+        <AssociationConnector Association="Model.FK_Messages_Messages" />
+        <AssociationConnector Association="Model.FK_Messages_Users1" />
+        <AssociationConnector Association="Model.FK_Messages_Users2" />
+        <AssociationConnector Association="Model.FK_OrderDetails_Orders" />
+        <AssociationConnector Association="Model.FK_OrderDetails_Products" />
+        <AssociationConnector Association="Model.FK_Orders_Users" />
+        <AssociationConnector Association="Model.FK_Products_ShopUsers" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

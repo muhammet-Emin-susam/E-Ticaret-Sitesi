@@ -1,0 +1,138 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Home.cshtml";
+}
+<div class="modal fade text-start" id="AddProduct" tabindex="-1" aria-labelledby="myModalLabel17" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel17">Profil Düzenle</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <input type="text" name="name" id="UserEditID" value="" hidden />
+            </div>
+            <div class="modal-body" id="GetUser">
+                @Html.Partial("_AddProduct")
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content ecommerce-application">
+    <div class="content-overlay"></div>
+    <div class="header-navbar-shadow"></div>
+    <div class="content-wrapper container-xxl p-0">
+        <div class="content-header row">
+            <div class="content-header-left col-md-9 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-12">
+                        <h2 class="content-header-title float-start mb-0">Ürünlerim</h2>
+                        <div class="breadcrumb-wrapper">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="/Home/Index">Anasayfa</a>
+                                </li>
+                                <li class="breadcrumb-item active">
+                                    Ürünlerim
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-header-right text-md-end col-md-3 col-12 d-md-block d-none">
+                <div class="mb-1 breadcrumb-right">
+                    <a class="btn btn-relief-success" href="/AddProduct/ProductDetail">Ürün Ekle</a>
+                </div>
+            </div>
+        </div>
+        <div class="content-body">
+            <!-- Wishlist Starts -->
+            <section id="wishlist" class="grid-view wishlist-items">
+                @foreach (var item in ViewBag.Products)
+                {
+                    <div class="card ecommerce-card">
+                        <div class="item-img text-center">
+                            <a href="/Home/ProductDetail/@item.ID">
+                                @if (item.ImageURL != "0")
+                                {
+                                    <img src="@item.ImageURL" class="img-fluid" alt="img-placeholder" style=" width: 339px; height: 339px;" />
+                                }
+                                else
+                                {
+                                    <img src="~/Uploads/Product/urun-resmi-yok.png" class="img-fluid" alt="img-placeholder" />
+                                }
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <div class="item-wrapper">
+                                <div class="item-rating">
+                                    <ul class="unstyled-list list-inline">
+                                        @for (int i = 0; i < item.StarPoint; i++)
+                                        {
+                                            <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i></li>
+                                        }
+                                        @for (int i = 0; i < 5 - item.StarPoint; i++)
+                                        {
+                                            <li class="ratings-list-item"><i data-feather="star" class="unfilled-star"></i></li>
+                                        }
+                                    </ul>
+                                </div>
+                                <div class="item-cost">
+                                    <h6 class="item-price">@item.Price.ToString("c")</h6>
+                                </div>
+                            </div>
+                            <div class="item-name">
+                                <a href="/Home/ProductDetail/@item.ID">@item.Name</a>
+                            </div>
+                            <p class="card-text item-description">
+                                @item.Description
+                            </p>
+                        </div>
+                        <div class="item-options text-center">
+                            <button type="button" onclick="DeleteProduct(@item.ID)" class="btn btn-light btn-wishlist">
+                                <i data-feather="x"></i>
+                                <span>Ürün Sil</span>
+                            </button>
+                            <a href="~/AddProduct/EditProduct/@item.ID" class="btn btn-primary">
+                                <i data-feather='edit'></i>
+                                <span class="">Düzenle</span>
+                            </a>
+                        </div>
+                    </div>
+                }
+            </section>
+            <!-- Wishlist Ends -->
+
+        </div>
+    </div>
+</div>
+
+
+
+@section Adjs
+{
+    <script>
+        function AddProduct() {
+            $('#AddProduct').modal('show');
+        }
+
+
+
+
+        function DeleteProduct(ID) {
+            getValue("AddProduct/DeleteProduct",
+                { ID: ID},
+                function (data, err) {
+                    if (!data) {
+                        return;
+                    } else if (data == 'Başarılı') {
+                        location.href = '@Url.Action("Index", "AddProduct")';
+                    }
+                    else if (data.indexOf('Hata') > -1) {
+                        alert(data)
+                    }
+                });
+        };
+        
+    </script>
+}

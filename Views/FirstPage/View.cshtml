@@ -1,0 +1,121 @@
+﻿
+<div class="tumtaksitpano">
+    @foreach (var Bankaitem in Model)
+    {
+
+        String imgsrc = "/Content/style/Tahsilat/Img/" + Bankaitem.BankaKodu + ".png";
+
+        <div class="bankataksit @Bankaitem.KartBanka @Bankaitem.KartMarka @Bankaitem.KartTip">
+            <div class="bankataksit title">
+                @if (Bankaitem.BankaKodu != "")
+                {
+                    <img src="@imgsrc" />
+                }
+                else
+                {
+                    <span>@Bankaitem.KartBanka</span>
+                }
+
+            </div>
+            <div class="bankataksits">
+                <table>
+                    <thead>
+                    <th>Taksit Sayısı</th>
+                    <th>Aylık Ödeme</th>
+                    <th>Komisyon Tutarı</th>
+                    <th>Genel Toplam</th>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Bankaitem.Taksit)
+                        {
+
+                            <tr class="bankatakists-item @item.TaksitSayisi">
+                                <td>@item.TaksitSayisi</td>
+                                <td>@item.TaksitAylikOdeme</td>
+                                <td>@item.TaksitKomisyonTutari</td>
+                                <td>@item.TaksitGenelToplam</td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    }
+
+</div>
+
+<div class="tumtaksitpano">
+    <div class="bankataksit @Bankaitem.KartBanka @Bankaitem.KartMarka @Bankaitem.KartTip">
+        <div class="bankataksits">
+            <table style="width:100%">
+
+                <tr>
+                    <th>
+                        @if (Bankaitem.BankaKodu != "")
+                        {
+                            <img src="@imgsrc" />
+                        }
+                        else
+                        {
+                            <span>@Bankaitem.KartBanka</span>
+                        }
+                    </th>
+                </tr>
+
+                <tr>
+                    @foreach (var item in Bankaitem.Taksit)
+                    {
+                        <th>@item.TaksitSayisi</th>
+                        <td>@item.TaksitAylikOdeme</td>
+                    }
+                </tr>
+
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="tumtaksitpano">
+    <table style="width:100%">
+        @foreach (var Bankaitem in Model)
+        {
+            String imgsrc = "/Content/style/Tahsilat/Img/" + Bankaitem.BankaKodu + ".png";
+            <thead>
+                <tr>
+                    <th>
+                        @if (Bankaitem.BankaKodu != "")
+                        {
+                            <img src="@imgsrc" />
+                        }
+                        else
+                        {
+                            <span>@Bankaitem.KartBanka</span>
+                        }
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Bankaitem.Taksit)
+                {
+                    <tr class="bankatakists-item @item.TaksitSayisi">
+                        <td>@item.TaksitSayisi</td>
+                    </tr>
+                }
+            </tbody>
+        }
+    </table>
+</div>
+
+
+
+
+
+
+

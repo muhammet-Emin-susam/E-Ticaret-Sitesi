@@ -1,0 +1,399 @@
+﻿@model E_Ticaret.Models.Users
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Home.cshtml";
+}
+
+<div class="modal fade text-start" id="EditAddress" tabindex="-1" aria-labelledby="myModalLabel33" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel33">Adres Düzenleme</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <input type="text" id="AddressID" hidden />
+            </div>
+            <div class="modal-body" id="GetAddress">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="UpdateAddress()">Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade text-start" id="EditUser" tabindex="-1" aria-labelledby="myModalLabel17" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel17">Profil Düzenle</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <input type="text" name="name" id="UserEditID" value="" hidden />
+            </div>
+            <div class="modal-body" id="GetUser">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="content ">
+    <div class="content-overlay"></div>
+    <div class="header-navbar-shadow"></div>
+    <div class="content-wrapper container-xxl p-0">
+        <div class="content-header row">
+            <div class="content-header-left col-md-9 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-12">
+                        <h2 class="content-header-title float-start mb-0">Profil Detayları</h2>
+                        <div class="breadcrumb-wrapper">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="/Home/Index">Anasayfa</a>
+                                </li>
+                                <li class="breadcrumb-item active">
+                                    @Model.UserName
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-body">
+            <div id="user-profile">
+                <!-- profile header -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card profile-header mb-2">
+                            <!-- profile cover photo -->
+                            <img class="card-img-top" src="~/Content/app-assets/images/profile/user-uploads/timeline.jpg" alt="User Profile Image" />
+                            <!--/ profile cover photo -->
+
+                            <div class="position-relative">
+                                <!-- profile picture -->
+                                <div class="profile-img-container d-flex align-items-center">
+                                    <div class="profile-img">
+                                        @if (@Model.UserImage == null)
+                                        {
+                                            <img src="~/Content/app-assets/images/avatars/NotAvatar.png" class="rounded img-fluid" alt="Card image" />
+                                        }
+                                        else
+                                        {
+                                            <img src="@Model.UserImage" class="rounded img-fluid" alt="Card image" style="width: 115px; height: 95px;" />
+                                        }
+                                    </div>
+                                    <!-- profile title -->
+                                    <div class="profile-title ms-3">
+                                        <h2 class="text-white">@Model.UserName</h2>
+                                        <p class="text-white">@Model.UserRole</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- tabs pill -->
+                            <div class="profile-header-nav">
+                                <!-- navbar -->
+                                <nav class="navbar navbar-expand-md navbar-light justify-content-end justify-content-md-between w-100">
+                                    <button class="btn btn-icon navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                        <i data-feather="align-justify" class="font-medium-5"></i>
+                                    </button>
+
+                                    <!-- collapse  -->
+                                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                        <div class="profile-tabs d-flex justify-content-between flex-wrap mt-1 mt-md-0">
+                                            <ul class="nav nav-pills mb-0">
+                                            </ul>
+                                            <!-- edit button -->
+                                            <button class="btn btn-primary" onclick="GetUser(@Session["ID"])">
+                                                <i data-feather="edit" class="d-block d-md-none"></i>
+                                                <span class="fw-bold d-none d-md-block">Düzenle</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!--/ collapse  -->
+                                </nav>
+                                <!--/ navbar -->
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!--/ profile header -->
+                <!-- profile info section -->
+                <section id="profile-info">
+                    <div class="row">
+                        <!-- left profile info section -->
+                        <div class="col-lg-12 col-12 order-2 order-lg-1">
+                            <!-- about -->
+                            <div class="card">
+                                <div class="card-body">
+                                    <h2>Bilgilerim</h2>
+                                    <div class="mt-2">
+                                        <h5 class="mb-75">Ne zaman katıldı:</h5>
+                                        <p class="card-text">@Model.UserAddedDate</p>
+                                    </div>
+                                    <div class="mt-2">
+                                        <h5 class="mb-75">Güncel adres:</h5>
+                                        <p class="card-text" id="OpenAdress"></p>
+                                    </div>
+                                    <div class="mt-2">
+                                        <h5 class="mb-75">Email:</h5>
+                                        <p class="card-text">@Model.UserMail</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/ about -->
+                        </div>
+                        <!--/ left profile info section -->
+                    </div>
+
+                    <!-- reload button -->
+                    <!--/ reload button -->
+                </section>
+                <section id="profile-info">
+                    <div class="row">
+                        <!-- left profile info section -->
+                        <div class="col-lg-12 col-12 order-2 order-lg-1">
+                            <!-- about -->
+                            <div class="card">
+                                <div class="card-body">
+                                    <button class="btn btn-dark waves-effect waves-float waves-light" style="float: right; right: 7px" id="BtnAddAddress" onclick="AddAdres()">Adres Ekle</button>
+                                    <h4>Adreslerim</h4>
+                                    <div class="table-responsive" style="margin-top: 25px">
+
+
+                                        <div class="col-lg-12" style="margin-bottom: 30px; display: none" id="AddAddress">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Adres Adı</label>
+                                                    <input type="text" class="form-control" id="Name" />
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Adres</label>
+                                                    <input type="text" class="form-control" id="Description" />
+                                                    <input type="text" class="form-control" id="UserID" value="@Session["ID"]" hidden />
+
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label">Şehir</label>
+                                                    <input type="text" class="form-control" id="City" />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label">Ülke</label>
+                                                    <input type="text" class="form-control" id="Country" />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label">Daire No</label>
+                                                    <input type="text" class="form-control" id="ApartmentNo" />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label">Ev No</label>
+                                                    <input type="text" class="form-control" id="HomeNo" />
+                                                </div>
+
+                                                <div class="col-md-12" style="">
+                                                    <button type="button" class="btn btn-info waves-effect waves-float waves-light" style="margin-top: 20px; border-radius: 10px; " onclick="AddAddress()">Kaydet</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <table class="table table-striped">
+                                            <thead class="table-dark">
+                                                <tr>
+                                                    <th>Adres Adı</th>
+                                                    <th>Adres</th>
+                                                    <th>Şehir</th>
+                                                    <th>Ülke</th>
+                                                    <th>Daire No</th>
+                                                    <th>Ev No</th>
+                                                    <th>İşlemler</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in ViewBag.Address)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            <span class="fw-bold">@item.Name</span>
+                                                        </td>
+                                                        <td>@item.Description</td>
+                                                        <td>@item.City</td>
+                                                        <td>@item.Country</td>
+                                                        <td>@item.ApartmentNo</td>
+                                                        <td>@item.HomeNo</td>
+                                                        <td>
+                                                            <a> <span onclick="EditAddress(@item.ID)"><i data-feather='edit-3'></i></span></a><a><span style="margin-left: 20px" onclick="DeleteAddress(@item.ID)"><i data-feather='trash-2'></i></span></a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/ about -->
+                        </div>
+                        <!--/ left profile info section -->
+                    </div>
+
+                    <!-- reload button -->
+                    <!--/ reload button -->
+                </section>
+                <!--/ profile info section -->
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section Adjs
+{
+    <script>
+        let latitude, longitude = "";
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(onSuccess, onError);
+        } else {
+            alert("Konum bilgisi alınamyor.")
+        }
+        function onSuccess(position) {
+            let latitude = position.coords.latitude;
+            let longitude = position.coords.longitude;
+
+            const api_key = "93cd2f03f9a4473eab00b48326a0c1df"
+            const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${api_key}`;
+
+
+            fetch(url)
+                .then(response => response.json())
+                .then(result => {
+                    console.log(result.results[0])
+                    let details = result.results[0].components;
+
+                    let { building, road, postcode, town, country } = details;
+
+                    document.getElementById("OpenAdress").innerHTML = `
+                                     ${building}  ${road} ${postcode} ${town} ${country}
+                                `;
+                });
+
+
+        }
+
+        function onError(error) {
+            if (error.code == 1) {
+                alert("Kullanıcı Erişim İznini Reddetti");
+            } else if (error.code == 2) {
+                alert("Konum Alınamadı");
+            }
+            else {
+                alert("Bir hata oluştu");
+            }
+        }
+
+        function GetUser(ID) {
+            getValue("ProfilDetail/UserEdit",
+                { ID: ID },
+                function (data, err) {
+                    if (!data) {
+                        return;
+                    } else {
+                        $('#GetUser').html(data);
+                        $('#EditUser').modal('show');
+                        $('#UserEditID').val(ID);
+                    }
+                })
+
+        };
+
+        //$("BtnAddAddress").click(function () {
+        //    $("AddAddress").show(1000);
+        //});
+
+        function AddAdres() {
+            var x = document.getElementById("AddAddress");
+            if (x.style.display === "none") {
+                /*x.style.display = "block";*/
+                $(x).show(1000);
+                /*$('body').animate({ scrollTop: $('#AddAddress').offset().top }, 500);*/
+                $("html, body").animate({
+                    scrollTop: $('#AddAddress').offset().top
+                }, 600);
+            } else {
+                /*x.style.display = "none";*/
+                $(x).hide(1000);
+            }
+        }
+
+        function AddAddress() {
+            if ($('#Name').val(), $('#Description').val() == "") {
+                alert("Lütfen Boş geçmeyiniz.");
+                return;
+            }
+            getValue("ProfilDetail/AddAddress",
+                { UserID: $('#UserID').val(), Name: $('#Name').val(), Description: $('#Description').val(), ApartmentNo: $('#ApartmentNo').val(), HomeNo: $('#HomeNo').val(), Country: $('#Country').val(), City: $('#City').val()},
+                function (data, err) {
+                    if (!data) {
+                        return;
+                    } else if (data == 'Başarılı') {
+                        location.href = '@Url.Action("Index", "ProfilDetail")';
+                    }
+                    else if (data.indexOf('Hata') > -1) {
+                        alert(data)
+                    }
+                });
+        };
+        function DeleteAddress(ID) {
+            getValue("ProfilDetail/DeleteAddress",
+                { ID: ID },
+                function (data, err) {
+                    if (!data) {
+                        return;
+                    } else if (data == 'Başarılı') {
+                        location.href = '@Url.Action("Index", "ProfilDetail")';
+                    }
+                    else if (data.indexOf('Hata') > -1) {
+                        alert(data)
+                    }
+                });
+        };
+
+
+
+
+        function EditAddress(ID) {
+            getValue("ProfilDetail/EditAddress",
+                { ID: ID },
+                function (data, err) {
+                    console.log(data);
+                    if (!data) {
+                        return;
+                    } else {
+                        $('#GetAddress').html(data);
+                        $('#AddressID').val(ID);
+                        $('#EditAddress').modal('show');
+                    }
+                })
+
+        };
+
+
+        function UpdateAddress() {
+            getValue("ProfilDetail/UpdateAddress",
+                { AddressDescription: $('#AddressDescription').val(), AddressName: $('#AddressName').val(), ID: $('#AddressID').val(), AddressHomeNo: $('#AddressHomeNo').val(), AddressApartNo: $('#AddressApartNo').val(), AddressCountry: $('#AddressCountry').val(), AddressCity: $('#AddressCity').val()},
+                function (data, err) {
+                    if (!data) {
+                        return;
+                    } else if (data == 'Başarılı') {
+                        location.href = '@Url.Action("Index", "ProfilDetail")';
+                    }
+                    else if (data.indexOf('Hata') > -1) {
+                        alert(data)
+                    }
+                })
+        };
+    </script>
+}

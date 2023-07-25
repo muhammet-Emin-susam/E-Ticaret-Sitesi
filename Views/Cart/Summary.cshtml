@@ -1,0 +1,92 @@
+﻿@model E_Ticaret.Models.Cart
+<li class="nav-item dropdown dropdown-cart me-25">
+    <a class="nav-link" href="#" data-bs-toggle="dropdown">
+        <i class="ficon" data-feather="shopping-cart"></i>
+        @if (Model.Cartlines.Count > 0)
+        {
+            <span class="badge rounded-pill bg-primary badge-up cart-item-count">@(Model.Cartlines.Count)</span>
+        }
+        else
+        {
+            <span class="badge rounded-pill bg-primary badge-up cart-item-count" hidden></span>
+        }
+    </a>
+    <ul class="dropdown-menu dropdown-menu-media dropdown-menu-end">
+        <li class="dropdown-menu-header">
+            <div class="dropdown-header d-flex">
+                <h4 class="notification-title mb-0 me-auto">Sepet</h4>
+                <div class="badge rounded-pill badge-light-primary">@(Model.Cartlines.Count) Ürün</div>
+            </div>
+        </li>
+        <li class="scrollable-container media-list">
+            @if (Model.Cartlines.Count != 0)
+            {
+                foreach (var item in Model.Cartlines)
+                {
+                    <div class="list-item align-items-center">
+                        @if (item.Product.ImageURL == "0")
+                        {
+                            <img class="d-block rounded me-1" src="~/Uploads/Product/urun-resmi-yok.png" alt="donuts" width="62">
+                        }
+                        else
+                        {
+                    <img class="d-block rounded me-1" src="@item.Product.ImageURL" alt="donuts" width="62">
+                        }
+                        @*<img class="d-block rounded me-1" src="../../../app-assets/images/pages/eCommerce/1.png" alt="donuts" width="62">*@
+                        <div class="list-item-body flex-grow-1">
+                            <i class="ficon cart-item-remove" data-feather="x" onclick="RemoveCart(@item.Product.ID)"></i>
+                            <div class="media-heading">
+                                <h6 class="cart-item-title"><a class="text-body" href="/Home/ProductDetail/@item.Product.ID"> @item.Product.Name</a></h6><small class="cart-item-by">@item.Product.TradeMark</small>
+                            </div>
+                            <div class="cart-item-qty">
+                                @*<div class="input-group">
+                                    <input class="touchspin-cart" type="number" disabled="" value="@item.Quantity">
+                                </div>*@
+                                @item.Quantity <span class="text-primary">adet</span>
+                            </div>
+                            <h5 class="cart-item-price">@item.Product.Price.ToString("c")</h5>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                @*<div class="alert alert-danger" role="alert">
+                        <h4 class="alert-heading">Sepet Boş</h4>
+                        <div class="alert-body">
+                            Sepetinizde Ürün Bulunmamaktadır.
+                        </div>
+                    </div>*@
+                <div class="alert alert-danger mt-1 alert-validation-msg" role="alert">
+                    <div class="alert-body d-flex align-items-center">
+                        <i data-feather="info" class="me-50"></i>
+                        <span>Sepetinizde Ürün Bulunmamaktadır.</span>
+                    </div>
+                </div>
+            }
+        </li>
+        <li class="dropdown-menu-footer">
+            @*<div class="d-flex justify-content-between mb-1">
+                    <h6 class="fw-bolder mb-0">Total:</h6>
+                    <h6 class="text-primary fw-bolder mb-0">@((Model.Cartlines.* item.Quantity).ToString("c"))</h6>
+                </div>*@
+            <a class="btn btn-primary w-100" href="/Cart/Index/@Session["ID"]">Sepet</a>
+        </li>
+    </ul>
+</li>
+
+<script>
+function RemoveCart(ID) {
+            getValue("Cart/RemoveCart",
+                { ID: ID },
+                function (data, err) {
+                    console.log(data);
+                    if (!data) {
+                        return;
+                    } else {
+                        window.location.href = '@Url.Action("Index","Cart")';
+                    }
+                })
+
+        };
+</script>

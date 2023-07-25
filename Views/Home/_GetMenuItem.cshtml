@@ -1,0 +1,52 @@
+﻿@using E_Ticaret.Models;
+@model IEnumerable<E_Ticaret.Models.Categories>
+<ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="@Url.Action("Index", "Home")"><i data-feather='home'></i><span data-i18n="Apps">Anasayfa</span></a>
+    </li>
+    @if (Session["UserRole"].ToString() == "Magaza")
+    {
+        <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" href="~/AddProduct/Index/@Session["ID"]"><i data-feather="package"></i><span data-i18n="Apps">Ürünlerim</span></a>
+        </li>
+    }
+    else
+    {
+        
+    }
+    @foreach (var item in Model)
+    {
+        if (item.ParentID == null)
+        {
+            <li class="nav-item">
+                <a class="nav-link d-flex align-items-center" href="@Url.Action("CategoriesView", "Home", new { id = item.ID })"><span data-i18n="Apps">@item.Name</span></a>
+            </li>
+        }
+
+        <!--var children = Model.Where(x => x.ParentID == item.ID).ToList();
+        if (children != null)
+        {-->
+        @*<li class="nav-item">
+                <a class="nav-link d-flex align-items-center" href="/Home/Index"><i data-feather="home"></i><span data-i18n="Dashboards">@item.Name</span></a>
+            </li>*@
+        <!--<li class="dropdown nav-item" data-menu="dropdown">
+            <a class="dropdown-toggle nav-link d-flex align-items-center" href="#" data-bs-toggle="dropdown"><span data-i18n="Apps"></span></a>
+            <ul class="dropdown-menu" data-bs-popper="none">-->
+        @*foreach (var itm in children)*@
+        <!--{
+                        <li data-menu="">
+                            <a class="dropdown-item d-flex align-items-center" href="/Home/CategoriesView/" data-bs-toggle="" data-i18n="File Manager"><i data-feather="save"></i><span data-i18n="File Manager"></span></a>
+                        </li>
+                    }
+                </ul>
+
+            </li>
+
+
+        }-->
+
+
+
+
+    }
+

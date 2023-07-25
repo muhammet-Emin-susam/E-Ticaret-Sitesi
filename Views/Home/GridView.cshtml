@@ -1,0 +1,111 @@
+﻿@using E_Ticaret.Models;
+@model IEnumerable<Products>
+
+
+@foreach (var item in Model)
+{
+    <div class="modal fade text-start modal-success" id="SuccessCart" tabindex="-1" aria-labelledby="myModalLabel110" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel110">Başarılı</h5>
+                    @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>*@
+                </div>
+                <div class="modal-body">
+                    Ürün başarıyla sepete eklendi.
+                </div>
+                <div class="modal-footer">
+                    <a href="/Home/CategoriesView/@item.CategoryID" class="btn btn-success">Alışverişe devam et</a>
+                    <a href="/Cart/Index/@Session["ID"]" class="btn btn-success">Sepete Git</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card ecommerce-card">
+        <div class="item-img text-center">
+            <a href="/Home/ProductDetail/@item.ID">
+                <img src="~/Uploads/Product/urun-resmi-yok.png" class="img-fluid" alt="img-placeholder" />
+            </a>
+        </div>
+        <input type="hidden" name="name" value="@item.CategoryID" id="CatID" />
+        <div class="card-body">
+            <div class="item-wrapper">
+                <div class="item-rating">
+                    <ul class="unstyled-list list-inline">
+                        @for (int i = 0; i < item.StarPoint; i++)
+                        {
+                            <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i></li>
+                        }
+                        @for (int i = 0; i < 5 - item.StarPoint; i++)
+                        {
+                            <li class="ratings-list-item"><i data-feather="star" class="unfilled-star"></i></li>
+                        }
+                        @*<li class="ratings-list-item"><i data-feather="star" class="filled-star"></i></li>
+                            <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i></li>
+                            <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i></li>
+                            <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i></li>
+                            <li class="ratings-list-item"><i data-feather="star" class="unfilled-star"></i></li>*@
+                    </ul>
+                </div>
+                @if (item.UnitsInStock != 0)
+                {
+                    <div class="item-cost">
+                        <h6 class="item-price">@item.Price.ToString("c")</h6>
+                        @*<input type="number" value="@item.CategoryID" id="CatID" hidden />*@
+                    </div>
+                }
+                else
+                {
+                    <div class="item-cost">
+                        <h6 class="item-price">Stokta Yok</h6>
+                        @*<input type="number" value="@item.CategoryID" id="CatID" hidden />*@
+                    </div>
+                }
+            </div>
+            <div class="item-name">
+                <a href="/Home/ProductDetail/@item.ID">@item.Name</a>
+                <small>@item.UnitsInStock adet</small>
+            </div>
+
+            <p class="card-text item-description">
+                @item.Description
+            </p>
+        </div>
+        @if (item.UnitsInStock != 0)
+        {
+            <div class="item-options text-center">
+                <button type="button" class="btn btn-primary w-100" onclick="AddCart(@item.ID)">
+                    <i data-feather="shopping-cart"></i>
+                    <span class="add-to-cart">Sepete Ekle</span>
+                </button>
+            </div>
+        }
+        else
+        {
+
+        }
+
+    </div>
+
+}
+
+
+
+
+<script>
+    function AddCart(ID) {
+        /*var ID = $("#ProductID").val();*/
+        getValue("Cart/AddCart",
+            { ID: ID },
+            function (data, err) {
+                if (!data) {
+                    return;
+                } else if (data == 'Başarılı') {
+                    $('#SuccessCart').modal('show');
+                }
+                else if (data.indexOf('Hata') > -1) {
+                    alert(data)
+                }
+            });
+    };
+</script>

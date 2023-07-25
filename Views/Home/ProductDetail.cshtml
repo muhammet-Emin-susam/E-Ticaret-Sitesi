@@ -1,0 +1,271 @@
+﻿@model E_Ticaret.Models.Products
+@{
+    ViewBag.Title = "ProductDetail";
+    Layout = "~/Views/Shared/_Home.cshtml";
+}
+<div class="modal fade text-start modal-success" id="SuccessCart" tabindex="-1" aria-labelledby="myModalLabel110" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel110">Başarılı</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Ürün başarıyla sepete eklendi.
+            </div>
+            <div class="modal-footer">
+                <a href="/Home/Index" class="btn btn-success">Alışverişe devam et</a>
+                <a href="/Cart/Index/@Session["ID"]" class="btn btn-success">Sepete Git</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content ecommerce-application">
+    <div class="content-overlay"></div>
+    <div class="header-navbar-shadow"></div>
+    <div class="content-wrapper container-xxl p-0">
+        <div class="content-header row">
+            <div class="content-header-left col-md-9 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-12">
+                        <h2 class="content-header-title float-start mb-0">Ürün Detayı</h2>
+                        <div class="breadcrumb-wrapper">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="/Home/Index">Anasayfa</a>
+                                </li>
+                                <li class="breadcrumb-item active">
+                                    @Model.Name
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="content-body">
+            <section class="app-ecommerce-details">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row my-2">
+                            <div class="col-12 col-md-5 d-flex align-items-center justify-content-center mb-2 mb-md-0">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    @if (Model.ImageURL == "0")
+                                    {
+                                        <img src="~/Uploads/Product/urun-resmi-yok.png" class="img-fluid product-img" alt="product image" />
+                                    }
+                                    else
+                                    {
+                                        <img src="@Model.ImageURL" style="width: 566px; height: 566px" class="img-fluid product-img" alt="product image" />
+                                    }
+                                    
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-7">
+                                <h4>@Model.Name</h4>
+                                <span class="card-text item-company">Marka <a href="#" class="company-name">@Model.TradeMark</a></span>
+                                <div class="ecommerce-details-price d-flex flex-wrap mt-1">
+                                    <h4 class="item-price me-1">@Model.Price.ToString("c")</h4>
+                                    <ul class="unstyled-list list-inline ps-1 border-start">
+                                        @for (int i = 0; i < Model.StarPoint; i++)
+                                        {
+                                            <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i></li>
+                                        }
+                                        @for (int i = 0; i < 5 - Model.StarPoint; i++)
+                                        {
+                                            <li class="ratings-list-item"><i data-feather="star" class="unfilled-star"></i></li>
+                                        }
+                                    </ul>
+                                </div>
+                                @if (Model.UnitsInStock != 0)
+                                {
+                                    <p class="card-text">Stokda - <span class="text-success">@Model.UnitsInStock adet</span></p>
+                                }
+                                else
+                                {
+                                    <p class="card-text text-danger">Stok Yok</p>
+                                }
+                                <p class="card-text">
+                                    @Model.Description
+                                </p>
+                                <hr />
+                                <div class="product-color-options">
+
+                                    <div class="d-flex flex-column flex-sm-row pt-1">
+                                        @*<a href="#" class="btn btn-primary me-0 me-sm-1 mb-1 mb-sm-0">*@
+                                        <button class="btn btn-primary me-0 me-sm-1 mb-1 mb-sm-0" onclick="AddCart()">
+                                            <i data-feather="shopping-cart" class="me-50"></i>
+                                            <span> Sepete Ekle</span>
+                                        </button>
+                                        @*</a>*@
+                                        <a href="#" class="btn btn-outline-secondary btn-wishlist me-0 me-sm-1 mb-1 mb-sm-0">
+                                            <i data-feather="heart" class="me-50"></i>
+                                            Favorilerime Al
+                                        </a>
+                                        <div class="btn-group dropdown-icon-wrapper btn-share">
+                                            <button type="button" class="btn btn-icon hide-arrow btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i data-feather="share-2"></i>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a href="#" class="dropdown-item">
+                                                    <i data-feather="facebook"></i>
+                                                </a>
+                                                <a href="#" class="dropdown-item">
+                                                    <i data-feather="twitter"></i>
+                                                </a>
+                                                <a href="#" class="dropdown-item">
+                                                    <i data-feather="youtube"></i>
+                                                </a>
+                                                <a href="#" class="dropdown-item">
+                                                    <i data-feather="instagram"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <section id="sortable-lists">
+                            <div class="row">
+                                <!-- Basic List Group starts -->
+                                <div class="col-sm-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="card-title">Yorumlar</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="card-text">
+                                                @*The most basic list group is simply an unordered list with list items, and the proper classes.*@
+                                            </p>
+                                            <ul class="list-group" id="basic-list-group">
+                                                @foreach (var item in ViewBag.Comments)
+                                                {
+                                                    <li class="list-group-item draggable">
+                                                        <div class="d-flex">
+                                                            <img src="@item.Users.UserImage" class="rounded-circle me-2" alt="img-placeholder" height="50" width="50" />
+                                                            <div class="more-info">
+                                                                <h5>@($"{item.Users.UserName}")</h5>
+                                                                <span>@item.Text</span>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+
+                                                }
+                                            </ul>
+                                            <div class="form-floating mt-2">
+                                                <input type="text" value="@Model.ID" id="ProductID" hidden />
+
+                                                <textarea class="form-control" placeholder="Yorum Yap" id="CommentTextArea" style="height: 100px"></textarea>
+                                                <label for="floatingTextarea2">Yorum Yap</label>
+                                                <input type="button" onclick="AddComment()" class="btn btn-relief-primary mt-75" style="float: right" name="name" value="Yorum Yap" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Basic List Group ends -->
+                                <!-- Multiple List Group starts -->
+
+                            </div>
+                        </section>
+
+                        <div class="card-body">
+                            <div class="mt-4 mb-2 text-center">
+                                <h4>Bunlar İlgini Çekebilir</h4>
+                                <p class="card-text">Kullanıcılar bu ürünleride arattı.</p>
+                            </div>
+                            <div class="swiper-responsive-breakpoints swiper-container px-4 py-2">
+                                <div class="swiper-wrapper">
+                                    @foreach (var item in ViewBag.SamePro)
+                                    {
+                                        <div class="swiper-slide">
+                                            <a href="/Home/ProductDetail/@item.ID">
+                                                <div class="item-heading">
+                                                    <h5 class="text-truncate mb-0">@item.Name</h5>
+                                                    <small class="text-body">@item.TradeMark</small>
+                                                </div>
+                                                <div class="img-container w-50 mx-auto py-50">
+                                                    @if (item.ImageURL == "0")
+                                                    {
+                                                        <img src="~/Uploads/Product/urun-resmi-yok.png" class="img-fluid" alt="image" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="@item.ImageURL" class="img-fluid" alt="image" style="width: 156px; height: 156px" />
+                                                    }
+                                                </div>
+                                                <div class="item-meta">
+                                                    <ul class="unstyled-list list-inline mb-25">
+                                                        @for (int i = 0; i < @item.StarPoint; i++)
+                                                        {
+                                                            <li class="ratings-list-item"><i data-feather="star" class="filled-star"></i></li>
+                                                        }
+                                                        @for (int i = 0; i < 5 - @item.StarPoint; i++)
+                                                        {
+                                                            <li class="ratings-list-item"><i data-feather="star" class="unfilled-star"></i></li>
+                                                        }
+                                                    </ul>
+                                                    <p class="card-text text-primary mb-0">$@item.Price</p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="swiper-button-next"></div>
+                                <div class="swiper-button-prev"></div>
+                                <input type="text" name="name" value="@Session["ID"]" id="UserId" hidden />
+                            </div>
+                        </div>
+                    </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Adjs
+{
+    <script>
+        function AddComment() {
+            var UserID = 35
+         getValue("/Home/GetComment",
+             { CommentTextArea: $('#CommentTextArea').val(), ProductID: $('#ProductID').val(), UserID: $('#UserId').val() },
+                function (data, err) {
+                    if (!data) {
+                        return;
+                    } else if (data == 'Başarılı') {
+                         window.location.replace("@Url.Action("ProductDetail", "Home")");
+                        @*setTimeout(function () { window.location.replace("@Url.Action("Index", "Login")"); }, 1400); // BAŞKA SAYFAYA GÖNDERME*@
+                    }
+                    else if (data.indexOf('Hata') > -1) {
+                        alert("asdas");
+                    }
+
+                });
+        };
+        function AddCart() {
+            var ID = $("#ProductID").val();
+            getValue("Cart/AddCart",
+                { ID : ID},
+                function (data, err) {
+                    if (!data) {
+                        return;
+                    } else if (data == 'Başarılı') {
+                     @*window.location.href = '@Url.Action("Index","Home")';*@
+                        $('#SuccessCart').modal('show');
+                    }
+                    else if (data.indexOf('Hata') > -1) {
+                        alert(data)
+                    }
+                });
+        };
+
+
+
+
+
+    </script>
+}

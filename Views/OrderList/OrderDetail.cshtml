@@ -1,0 +1,72 @@
+﻿@model List<E_Ticaret.Models.UserOrderModel>
+@{
+    ViewBag.Title = "OrderDetail";
+    Layout = "~/Views/Shared/_Home.cshtml";
+}
+
+<div class="row" id="table-hover-row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Siparişlerim</h4>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    Verdiğiniz siparişleri görüyorsunuz.
+                </p>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Ürünler</th>
+                            <th>Toplam Fiyat</th>
+                            <th>Tarih</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Count != 0)
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <p style="width: 400px; overflow: hidden; /* taşmayı engeller */white-space: nowrap; /* alt satıra geçmemesi içindir. */text-overflow: ellipsis;">
+                                            <span class="fw-bold">
+                                                @item.OrderName
+                                            </span>
+                                        </p>
+                                    </td>
+                                    <td>@item.TotalPrice.ToString("c")</td>
+                                    <td><span class="badge rounded-pill badge-light-primary me-1">@item.AddedDate</span></td>
+                                    <td>
+                                        <a href="~/OrderList/Index/@item.OrderID">
+                                            <i data-feather='grid'></i>
+                                            Sipariş Detayı
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>
+                                    <div class="alert alert-primary mt-1 alert-validation-msg" role="alert">
+                                        <div class="alert-body d-flex align-items-center">
+                                            <i data-feather='shopping-cart' class="me-50"></i>
+                                            <span>Siparişiniz Bulunmamaktadır.Bir hata olduğunu düşünüyorsanız bizimle iletişime geçebilirsiniz.</span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+

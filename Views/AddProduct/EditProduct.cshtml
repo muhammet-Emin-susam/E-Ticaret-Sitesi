@@ -1,0 +1,122 @@
+﻿@model E_Ticaret.Models.Products
+
+@{
+    ViewBag.Title = "EditProduct";
+    Layout = "~/Views/Shared/_Home.cshtml";
+}
+
+<section id="input-group-basic">
+    <div class="row">
+        <!-- Basic -->
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Ürün Düzenle</h4>
+                </div>
+                <div class="card-body">
+                    <form action="~/AddProduct/UpdateProduct" method="post" enctype="multipart/form-data">
+
+                        <label class="form-label">Ürün Resmi</label>
+                        <div class="input-group mb-2">
+                            <div class="image-preview">
+                                <img class="img-responsive img-thumbnail" id="Resim" src="@Model.ImageURL" style="width: 352px; height: 200px;" />
+                            </div>
+                        </div>
+                        <div class="input-group mb-2">
+                            <input type="file" id="SelectImage" style="display: none" name="ImageURL" />
+                            <input type="button" class="btn btn-secondary waves-effect waves-float waves-light" value="Resim Ekle" id="AddImage" />
+                        </div>
+                        <label class="form-label">Ürün Adı</label>
+                        <div class="input-group mb-2">
+                            <input type="text" class="form-control" value="@Model.Name" placeholder="Ürün Adı" name="Name" aria-label="Ürün Adı" />
+                        </div>
+                        <div class="input-group mb-2">
+                            <span class="input-group-text">&#8378;</span>
+                            <input type="text" class="form-control" placeholder="100" value="@Model.Price" name="Price" aria-label="Amount (to the nearest dollar)" />
+                            <span class="input-group-text">.00</span>
+                        </div>
+                        <label class="form-label">Ürün Stok Adeti</label>
+                        <div class="input-group mb-2">
+                            <input type="text" class="form-control" placeholder="1" value="@Model.UnitsInStock" name="UnitsInStock" aria-label="1" />
+                        </div>
+                        <label class="form-label">Ürün Kategorisi</label>
+                        <div class="input-group mb-2">
+                            @*@Html.DropDownListFor(model => model.CategoryID, (List<SelectListItem>)ViewBag.Categorys, new { @class = "form-control" })*@
+                            @*@Html.DropDownListFor(m => m.CategoryID, (List<SelectListItem>)ViewBag.Categorys, new { @class = "form-control", @name = "CategoryID", @value = @Model.CategoryID })*@
+                            <input type="hidden" name="StoreID" value="@Session["ID"]" />
+                        </div>
+                        <label class="form-label">Ürün Markası</label>
+                        <div class="input-group mb-2">
+                            <input type="text" class="form-control" placeholder="Ürün Markası" value="@Model.TradeMark" name="TradeMark" aria-label="Ürün Markası" />
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-text">Ürün Açıklaması</span>
+                            <textarea class="form-control" aria-label="With textarea"  placeholder ="@Model.Description" name="Description"></textarea>
+                        </div>
+                        <input type="hidden" name="ID" value="@Model.ID" />
+                        <div class="input-group">
+                            <button class="btn btn-primary" type="submit">Kaydet</button>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Adjs
+{
+    <script>
+        $('#AddImage').click(function () {
+            $('#SelectImage').click();
+        });
+
+        $('#AddImage').click(function () {
+            var imgElement = $(this).find("img").first();
+            if (imgElement.length) {
+                var fullPath = imgElement.attr('src');
+                console.log(fullPath);
+            }
+        });
+
+
+
+        $(function () {
+            jQuery.browser = {};
+            jQuery.browser.msie = false;
+            jQuery.browser.version = 0;
+            if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
+                jQuery.browser.msie = true;
+                jQuery.browser.version = RegExp.$1;
+            }
+            $("#SelectImage").change(function () {
+                $(".image-preview").html("");
+                var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpg|.jpeg|.gif|.png|.bmp)$/;
+                if (regex.test($(this).val().toLowerCase())) {
+                    if ($.browser.msie && parseFloat(jQuery.browser.version) <= 9.0) {
+                        $(".image-preview").show();
+                        $(".image-preview")[0].filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = $(this).val();
+                    }
+                    else {
+                        if (typeof (FileReader) != "undefined") {
+                            $(".image-preview").show();
+                            $(".image-preview").append("<img style= width:24.92rem;height:13.92rem;margin-top:50; />");
+                            var reader = new FileReader();
+                            reader.onload = function (e) {
+                                $(".image-preview img").attr("src", e.target.result);
+                            }
+                            reader.readAsDataURL($(this)[0].files[0]);
+                        } else {
+                            alert("This browser does not support FileReader.");
+                        }
+                    }
+                } else {
+                    alert("Please upload a valid image file.");
+                }
+            });
+        });
+    </script>
+}
+

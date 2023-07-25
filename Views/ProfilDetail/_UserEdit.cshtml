@@ -1,0 +1,83 @@
+﻿@model E_Ticaret.Models.Users
+<div class="container">
+    <form action="~/ProfilDetail/UserUpdate" method="post" enctype="multipart/form-data">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Email: </label>
+                    <div class="mb-1">
+                        <input type="text" value="@Model.UserMail" placeholder="Email Address" class="form-control" name="UserMail" />
+                    </div>
+                    <input type="text" name="ID" value="@Model.ID" hidden />
+                    <label>Şifre: </label>
+                    <div class="mb-1">
+                        <input type="password" value="@Model.UserPassword" placeholder="Password" class="form-control" name="UserPassword" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="image-preview">
+                        <img class="img-responsive img-thumbnail" id="Resim" src="@Model.UserImage" style="width: 352px; height: 200px;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-success waves-effect waves-float waves-light" data-bs-dismiss="modal">Güncelle</button>
+            <input type="file" id="SelectImage" style="display: none" name="UserImage" />
+            <input type="button" class="btn btn-secondary waves-effect waves-float waves-light" value="Resim Ekle" id="AddImage" />
+        </div>
+
+    </form>
+</div>
+
+
+<script>
+    $('#AddImage').click(function () {
+        $('#SelectImage').click();
+    });
+
+    $('#AddImage').click(function () {
+        var imgElement = $(this).find("img").first();
+        if (imgElement.length) {
+            var fullPath = imgElement.attr('src');
+            console.log(fullPath);
+        }
+    });
+
+
+
+    $(function () {
+        jQuery.browser = {};
+        jQuery.browser.msie = false;
+        jQuery.browser.version = 0;
+        if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
+            jQuery.browser.msie = true;
+            jQuery.browser.version = RegExp.$1;
+        }
+        $("#SelectImage").change(function () {
+            $(".image-preview").html("");
+            var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpg|.jpeg|.gif|.png|.bmp)$/;
+            if (regex.test($(this).val().toLowerCase())) {
+                if ($.browser.msie && parseFloat(jQuery.browser.version) <= 9.0) {
+                    $(".image-preview").show();
+                    $(".image-preview")[0].filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = $(this).val();
+                }
+                else {
+                    if (typeof (FileReader) != "undefined") {
+                        $(".image-preview").show();
+                        $(".image-preview").append("<img style= width:24.92rem;height:13.92rem;margin-top:50; />");
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            $(".image-preview img").attr("src", e.target.result);
+                        }
+                        reader.readAsDataURL($(this)[0].files[0]);
+                    } else {
+                        alert("This browser does not support FileReader.");
+                    }
+                }
+            } else {
+                alert("Please upload a valid image file.");
+            }
+        });
+    });
+</script>
